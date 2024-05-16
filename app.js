@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3 - energizer
   // 4 - empty
   const layoutBackup = layout.slice(); //creating a copy of the og layout
-  if (window.matchMedia("(max-width: 480px)").matches){
+  if (window.matchMedia("(max-width: 600px)").matches){
     instruct.innerHTML = "Press PLAY To <br>Start A New Game";
   }else{
     
