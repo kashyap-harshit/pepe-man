@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const sSecond = document.getElementById("s-second");
   const sThird = document.getElementById("s-third");
   const instruct = document.querySelector(".instruct");
+  const up = document.getElementById("up");
+  const left = document.getElementById("left");
+  const right = document.getElementById("right");
+  const down = document.getElementById("down");
+  const playPause = document.getElementById("menu");
   let pacmanClass;
   const squares = [];
   const width = 28;
@@ -94,7 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3 - energizer
   // 4 - empty
   const layoutBackup = layout.slice(); //creating a copy of the og layout
+  if (window.matchMedia("(max-width: 480px)").matches){
+    instruct.innerHTML = "Press PLAY To <br>Start A New Game";
+  }else{
+    
+    instruct.innerHTML = "Press Space Bar To <br>Start A New Game";
+  }
+  playPause.addEventListener("click", (event)=>{
+    if(playPause.innerHTML == "PLAY"){ //space
 
+      playPause.innerHTML = "PAUSE"
+      spaceBtn(event);
+    }else{//esc
+      playPause.innerHTML = "PLAY"
+      escBtn(event);
+      instruct.innerHTML = "Press PLAY To Continue";
+    }
+
+  })
   //function to load the top scorers - HK
   function topScorers() {
     highscore1 = localStorage.getItem("highscore1");
@@ -148,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const square = document.createElement("div");
       grid.appendChild(square);
       squares.push(square);
-      
+
       if (layout[i] === 0) {
         squares[i].classList.add("dot");
       }
@@ -161,10 +183,102 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (layout[i] === 3) {
         squares[i].classList.add("energizer");
       }
-      
+
     }
     console.log(squares.length)
     // console.log(length)
+  }
+  function spaceBtn(event){
+    event.preventDefault()
+    if (paused) {
+      grid.scrollIntoView();
+      sfx.bgm.play();
+
+      //call moveGhost function for each ghost by sending each ghost as parameter
+      ghosts.forEach((item, i) => {
+        moveGhost(item);
+      });
+
+      document.addEventListener("keydown", movePacMan);
+      paused = false;
+      gameStarted = true;
+    }
+
+    else if (gameStarted) {
+      //chill
+    }
+
+
+    else {//this condition will take place when the game will start for the first time. Redirecting to the game window -HK
+      event.preventDefault();
+      createBoard();
+      //draw pac-man
+      squares[pacmanCurrentIndex].classList.add("pac-man");
+      //draw ghosts on the board
+      ghosts.forEach((item, i) => {
+        squares[item.currentIndex].classList.add(item.color);
+        squares[item.currentIndex].classList.add("ghost");
+      });
+      if (!sfx.bgm.playing()) {
+        sfx.bgm.play();
+      } else {
+        sfx.bgm.stop();
+        sfx.bgm.play();
+
+      }
+      grid.scrollIntoView();
+
+      //call moveGhost function for each ghost by sending each ghost as parameter
+      ghosts.forEach((item, i) => {
+        squares[item.currentIndex].classList.remove("ghost", item.color, "dizzy", `dizzy-${item.color}`);
+
+        //draw ghosts on the board
+        item.currentIndex = item.startIndex;
+        squares[item.currentIndex].classList.add(item.color);
+        squares[item.currentIndex].classList.add("ghost");
+        moveGhost(item);
+      });
+
+
+      score = 0;
+
+      //draw pac-man
+      squares[pacmanCurrentIndex].classList.remove("pac-man");
+      pacmanCurrentIndex = 490;
+      squares[pacmanCurrentIndex].classList.add("pac-man");
+      pacmanClass = document.querySelector(".pac-man");
+      scoreDisplay.innerHTML = 0;
+      document.addEventListener("keydown", movePacMan);
+      left.addEventListener("click", ()=>{movePacGen(moveLeft)});
+      right.addEventListener("click", ()=>{movePacGen(moveRight)});
+      up.addEventListener("click", ()=>{movePacGen(moveUp)});
+      down.addEventListener("click", ()=>{movePacGen(moveDown)});
+      
+      pacmanClass.style.backgroundImage = "url(assets/pe1.png)";
+      clearInterval(bgInter);
+      bgInter = setInterval(() => {
+        randImg = Math.floor(Math.random() * 6 + 1);
+        pacmanClass.style.backgroundImage = `url(assets/pe${randImg}.png)`
+      }, 500);
+      gameStarted = true;
+    }
+  }
+  function escBtn(event){
+    if (gameStarted) {
+
+      event.preventDefault();
+      sfx.bgm.pause();
+      sfx.pause.play();
+      meta.scrollIntoView();
+      ghosts.forEach((item, i) => {
+        clearInterval(item.timerId);
+      });
+      paused = true;
+      gameStarted = false;
+      resultDisplay.innerHTML = "PAUSED";
+      instruct.innerHTML = "Press Space Bar To Continue";
+      document.removeEventListener("keydown", movePacMan)
+    }
   }
   function redirection(event) {
     if (gameStarted) {
@@ -174,89 +288,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (event.keyCode === 32) {
-      event.preventDefault()
-      if (paused) {
-        grid.scrollIntoView();
-        sfx.bgm.play();
 
-        //call moveGhost function for each ghost by sending each ghost as parameter
-        ghosts.forEach((item, i) => {
-          moveGhost(item);
-        });
-
-        document.addEventListener("keydown", movePacMan);
-        paused = false;
-        gameStarted = true;
-      }
-
-      else if (gameStarted) {
-        //chill
-      }
-
-
-      else {//this condition will take place when the game will start for the first time. Redirecting to the game window -HK
-        event.preventDefault();
-        createBoard();
-        //draw pac-man
-        squares[pacmanCurrentIndex].classList.add("pac-man");
-        //draw ghosts on the board
-        ghosts.forEach((item, i) => {
-          squares[item.currentIndex].classList.add(item.color);
-          squares[item.currentIndex].classList.add("ghost");
-        });
-        if (!sfx.bgm.playing()) {
-          sfx.bgm.play();
-        }
-        grid.scrollIntoView();
-
-        //call moveGhost function for each ghost by sending each ghost as parameter
-        ghosts.forEach((item, i) => {
-          squares[item.currentIndex].classList.remove("ghost", item.color, "dizzy", `dizzy-${item.color}`);
-
-          //draw ghosts on the board
-          item.currentIndex = item.startIndex;
-          squares[item.currentIndex].classList.add(item.color);
-          squares[item.currentIndex].classList.add("ghost");
-          moveGhost(item);
-        });
-        
-
-        score = 0;
-
-        //draw pac-man
-        squares[pacmanCurrentIndex].classList.remove("pac-man");
-        pacmanCurrentIndex = 490;
-        squares[pacmanCurrentIndex].classList.add("pac-man");
-        pacmanClass= document.querySelector(".pac-man");
-        scoreDisplay.innerHTML = 0;
-        document.addEventListener("keydown", movePacMan);
-        pacmanClass.style.backgroundImage = "url(assets/pe1.png)";
-        clearInterval(bgInter);
-        bgInter = setInterval(() => {
-          randImg = Math.floor(Math.random()*6 + 1);
-          pacmanClass.style.backgroundImage = `url(assets/pe${randImg}.png)`
-        }, 500);
-        gameStarted = true;
-      }
+      spaceBtn(event);
     }
 
 
     else if (event.keyCode === 27) { //esc button
-      if (gameStarted) {
-
-        event.preventDefault();
-        sfx.bgm.pause();
-        sfx.pause.play();
-        meta.scrollIntoView();
-        ghosts.forEach((item, i) => {
-          clearInterval(item.timerId);
-        });
-        paused = true;
-        gameStarted = false;
-        resultDisplay.innerHTML = "PAUSED";
-        instruct.innerHTML = "Press Space Bar To Continue";
-        document.removeEventListener("keydown", movePacMan)
-      }
+      escBtn(event);
     }
   }
   function checkDotEaten() {
@@ -295,8 +333,67 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 3000); //changed the time period of their freezing - HK
     }
   }
+  function moveLeft() {
+    // console.log(left);
+    if (pacmanCurrentIndex % width != 0 && !squares[pacmanCurrentIndex - 1].classList.contains("wall") && !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair")) {
+      pacmanCurrentIndex -= 1;
+    }
+    //factor in left exit
+    if (pacmanCurrentIndex - 1 === 363) {
+      if (sfx.transport.playing()) {
+        sfx.transport.stop();
+        sfx.transport.play();
+      } else {
+        sfx.transport.play();
+      }
+      pacmanCurrentIndex = 391;
+
+    }
+  
+  }
+  function moveRight(){
+    if (pacmanCurrentIndex % width < width - 1 && !squares[pacmanCurrentIndex + 1].classList.contains("wall") && !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair")) {
+      pacmanCurrentIndex += 1;
+    }
+    //factor in right exit
+    if (pacmanCurrentIndex + 1 === 392) {
+      if (sfx.transport.playing()) {
+        sfx.transport.stop();
+        sfx.transport.play();
+      } else {
+        sfx.transport.play();
+      }
+      pacmanCurrentIndex = 364;
+    }
+  }
+  function moveUp(){
+    if (pacmanCurrentIndex - width >= 0 && !squares[pacmanCurrentIndex - width].classList.contains("wall") && !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair")) {
+      pacmanCurrentIndex -= width;
+    }
+  }
+  function moveDown(){
+    if (pacmanCurrentIndex + width < width * width && !squares[pacmanCurrentIndex + width].classList.contains("wall") && !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair")) {
+      pacmanCurrentIndex += width;
+    }
+  }
+  function movePacGen(direc){
+    squares[pacmanCurrentIndex].classList.remove("pac-man");
+    pacmanClass.removeAttribute('style')
+    pacmanClass.style.backgroundImage = "";
+    direc();
+
+    squares[pacmanCurrentIndex].classList.add("pac-man");
+    pacmanClass = document.querySelector(".pac-man");
+    pacmanClass.style.backgroundImage = `url(assets/pe${randImg}.png)`;
+    //check for following functions after each movement
+    checkDotEaten();
+    checkEnergizerEaten();
+    youWin();
+    youLose();
+  }
+
   function movePacMan(event) {
-    
+
     squares[pacmanCurrentIndex].classList.remove("pac-man");
     pacmanClass.removeAttribute('style')
     pacmanClass.style.backgroundImage = "";

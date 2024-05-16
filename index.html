@@ -2,7 +2,8 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pepe-Man</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -51,10 +52,22 @@
   </div>
   <div class="space"></div>
   <div class="grid-p">
-
     <div id="grid"></div>
-  </div>
 
+  </div>
+  <div class="controls">
+    <div class="top">
+      <button type="button" id="up" class="ctrl-btn">&uarr;</button>
+    </div>
+    <div class="middle">
+      <button type="button" id="left" class="ctrl-btn">&larr;</button>
+      <button type="button" id="menu" class="ctrl-btn">PLAY</button>
+      <button type="button" id="right" class="ctrl-btn">&rarr;</button>
+    </div>
+    <div class="bottom">
+      <button type="button" id="down" class="ctrl-btn">&darr;</button>
+    </div>
+  </div>
   <script src="app.js" charset="utf-8"></script>
 </body>
 

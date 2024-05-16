@@ -135,24 +135,29 @@ button:hover {
   /* animation: imgChange 3s steps(1) infinite; */
 }
 
-@keyframes imgChange{
-  0%{
+@keyframes imgChange {
+  0% {
     background-image: url(assets/pe1.png);
   }
-  20%{
+
+  20% {
     background-image: url(assets/pe2.png);
     /* background-size: 108%; */
   }
-  40%{
+
+  40% {
     background-image: url(assets/pe3.png);
   }
-  60%{
+
+  60% {
     background-image: url(assets/pe4.png);
   }
-  80%{
+
+  80% {
     background-image: url(assets/pe5.png);
   }
-  100%{
+
+  100% {
     background-image: url(assets/pe1.png);
   }
 }
@@ -268,8 +273,67 @@ button:hover {
   align-items: center;
 }
 
+.controls {
+  display: none;
+}
+
 @media screen and (min-width: 1920px) {
   #meta {
     width: 50%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body{
+    width: fit-content;
+  }
+  .controls {
+    display: block;
+    position: fixed;
+    bottom: 355px;
+  }
+
+  .ctrl-btn {
+    height: 100px;
+    width: 100px;
+    margin: 0px 0px;
+    border: 2px solid;
+  }
+
+  .top {
+    text-align: center;
+  }
+
+  .bottom {
+    text-align: center;
+  }
+
+  #grid {
+    width: 880px;
+    height: 880px;
+  } 
+
+  #grid div {
+    width: 31px;
+    height: 31px;
+
+  }
+
+  .grid-p {
+    align-items: start;
+    padding-bottom: 830px;
+  }
+
+  #meta {
+    flex-direction: column;
+    justify-content: start;
+    padding: 360px 0px;
+  }
+
+  .menu {
+    padding: 60px 0px;
+  }
+  .instruct{
+    margin-top: 90px;
   }
 }
