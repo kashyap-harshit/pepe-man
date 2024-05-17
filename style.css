@@ -258,7 +258,8 @@ button:hover {
 }
 
 .menu {
-  /* width: 400px; */
+  width: 400px;
+
 }
 
 .space {
@@ -336,10 +337,11 @@ button:hover {
 
   .menu {
     padding-top: 30px;
+    width:auto;
   }
 
   .instruct {
-    margin-top: 60px;
+    margin-top: 40px;
   }
 
   .dot {
@@ -368,5 +370,31 @@ button:hover {
   }
   .orange{
     border: 0px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  .controls{
+    bottom: 3vh;
+  }
+  #meta{
+    font-size: 20px;  
+  }
+  .scoreBoard-sec{
+    margin: 0px;
+  }
+  .pm{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  button{
+    font-size: 22px;
+    margin-bottom: 0px;
+  }
+  .instruct{
+    margin-top: 10px;
+  }
+  .menu{
+    padding-top: 0px;
   }
 }
