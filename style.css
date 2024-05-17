@@ -43,6 +43,7 @@ body {
   margin: 0px 160px;
   height: 100vh;
   font-size: 30px;
+
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   margin-top: 100px;
@@ -220,9 +221,7 @@ button:hover {
   cursor: default;
 }
 
-.name {
-  /* margin-right: 30px; */
-}
+.name {}
 
 .infos {
   border-bottom: 4px solid yellow;
@@ -259,7 +258,7 @@ button:hover {
 }
 
 .menu {
-  width: 400px;
+  /* width: 400px; */
 }
 
 .space {
@@ -284,20 +283,21 @@ button:hover {
 }
 
 @media screen and (max-width: 600px) {
-  body{
-    width: fit-content;
-  }
+  body {}
+
   .controls {
     display: block;
     position: fixed;
-    bottom: 355px;
+    bottom: 70px;
   }
 
   .ctrl-btn {
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     margin: 0px 0px;
     border: 2px solid;
+    font-size: 13px;
+    padding: 0px;
   }
 
   .top {
@@ -309,31 +309,64 @@ button:hover {
   }
 
   #grid {
-    width: 880px;
-    height: 880px;
-  } 
+    width: auto;
+    height: auto;
+    padding-top: 110px;
+  }
 
   #grid div {
-    width: 31px;
-    height: 31px;
+    width: 14px;
+    height: 14px;
 
   }
 
   .grid-p {
     align-items: start;
     padding-bottom: 830px;
+    /* padding-top: 110px; */
+    
   }
 
   #meta {
     flex-direction: column;
     justify-content: start;
-    padding: 360px 0px;
+    padding: 70px 0px;
+    font-size: 25px;
   }
 
   .menu {
-    padding: 60px 0px;
+    padding-top: 30px;
   }
-  .instruct{
-    margin-top: 90px;
+
+  .instruct {
+    margin-top: 60px;
+  }
+
+  .dot {
+    border: 4px solid black;
+  }
+
+  .scoreBoard {
+    height: auto;
+
+    font-size: 15px;
+  }
+
+  .s-text {
+    height: auto;
+    padding: 4px 15px;
+  }
+
+  .scoreBoard-sec {
+    margin: 20px;
+  }
+  .red{
+    border: 0px;
+  }
+  .cyan{
+    border: 0px;
+  }
+  .orange{
+    border: 0px;
   }
 }

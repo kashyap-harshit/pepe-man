@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let pacmanCurrentIndex = 490;
   let randImg;
   let bgInter;
+  const movePacGenLeft = () => { movePacGen(moveLeft) };
+  const movePacGenRight = () => { movePacGen(moveRight) };
+  const movePacGenUp = () => { movePacGen(moveUp) };
+  const movePacGenDown = () => { movePacGen(moveDown) };
   let sfx = {
 
     eat: new Howl({
@@ -99,24 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3 - energizer
   // 4 - empty
   const layoutBackup = layout.slice(); //creating a copy of the og layout
-  if (window.matchMedia("(max-width: 600px)").matches){
-    instruct.innerHTML = "Press PLAY To <br>Start A New Game";
-  }else{
-    
-    instruct.innerHTML = "Press Space Bar To <br>Start A New Game";
+
+  function isMobile() {
+    if (window.matchMedia("(max-width: 600px)").matches) {
+      return true;
+    } return false;
   }
-  playPause.addEventListener("click", (event)=>{
-    if(playPause.innerHTML == "PLAY"){ //space
-
-      playPause.innerHTML = "PAUSE"
-      spaceBtn(event);
-    }else{//esc
-      playPause.innerHTML = "PLAY"
-      escBtn(event);
-      instruct.innerHTML = "Press PLAY To Continue";
-    }
-
-  })
   //function to load the top scorers - HK
   function topScorers() {
     highscore1 = localStorage.getItem("highscore1");
@@ -188,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(squares.length)
     // console.log(length)
   }
-  function spaceBtn(event){
+  function spaceBtn(event) {
     event.preventDefault()
     if (paused) {
       grid.scrollIntoView();
@@ -249,11 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
       pacmanClass = document.querySelector(".pac-man");
       scoreDisplay.innerHTML = 0;
       document.addEventListener("keydown", movePacMan);
-      left.addEventListener("click", ()=>{movePacGen(moveLeft)});
-      right.addEventListener("click", ()=>{movePacGen(moveRight)});
-      up.addEventListener("click", ()=>{movePacGen(moveUp)});
-      down.addEventListener("click", ()=>{movePacGen(moveDown)});
-      
+      left.addEventListener("click", movePacGenLeft);
+      right.addEventListener("click", movePacGenRight);
+      up.addEventListener("click", movePacGenUp);
+      down.addEventListener("click", movePacGenDown);
+
       pacmanClass.style.backgroundImage = "url(assets/pe1.png)";
       clearInterval(bgInter);
       bgInter = setInterval(() => {
@@ -263,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gameStarted = true;
     }
   }
-  function escBtn(event){
+  function escBtn(event) {
     if (gameStarted) {
 
       event.preventDefault();
@@ -349,9 +341,9 @@ document.addEventListener('DOMContentLoaded', () => {
       pacmanCurrentIndex = 391;
 
     }
-  
+
   }
-  function moveRight(){
+  function moveRight() {
     if (pacmanCurrentIndex % width < width - 1 && !squares[pacmanCurrentIndex + 1].classList.contains("wall") && !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair")) {
       pacmanCurrentIndex += 1;
     }
@@ -366,17 +358,17 @@ document.addEventListener('DOMContentLoaded', () => {
       pacmanCurrentIndex = 364;
     }
   }
-  function moveUp(){
+  function moveUp() {
     if (pacmanCurrentIndex - width >= 0 && !squares[pacmanCurrentIndex - width].classList.contains("wall") && !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair")) {
       pacmanCurrentIndex -= width;
     }
   }
-  function moveDown(){
+  function moveDown() {
     if (pacmanCurrentIndex + width < width * width && !squares[pacmanCurrentIndex + width].classList.contains("wall") && !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair")) {
       pacmanCurrentIndex += width;
     }
   }
-  function movePacGen(direc){
+  function movePacGen(direc) {
     squares[pacmanCurrentIndex].classList.remove("pac-man");
     pacmanClass.removeAttribute('style')
     pacmanClass.style.backgroundImage = "";
@@ -523,10 +515,20 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(item.timerId);
     });
     document.removeEventListener("keydown", movePacMan)
+    left.removeEventListener("click", movePacGenLeft);
+    right.removeEventListener("click", movePacGenRight);
+    up.removeEventListener("click", movePacGenUp);
+    down.removeEventListener("click", movePacGenDown);
     sfx.bgm.stop()
 
     resultDisplay.innerHTML = mess;
-    instruct.innerHTML = "Press Space Bar To <br>Start A New Game"
+    if(isMobile){
+      instruct.innerHTML = "Press PLAY To <br>Start A New Game"
+    }else{
+
+      instruct.innerHTML = "Press Space Bar To <br>Start A New Game"
+    }
+    playPause.innerHTML = "PLAY"
     meta.scrollIntoView();
     setTimeout(() => {
 
@@ -570,7 +572,24 @@ document.addEventListener('DOMContentLoaded', () => {
       gameOver("YOU WIN");
     }
   }
+  if (isMobile) {
+    instruct.innerHTML = "Press PLAY To <br>Start A New Game";
+  } else {
 
+    instruct.innerHTML = "Press Space Bar To <br>Start A New Game";
+  }
+  playPause.addEventListener("click", (event) => {
+    if (playPause.innerHTML == "PLAY") { //space
+
+      playPause.innerHTML = "PAUSE"
+      spaceBtn(event);
+    } else {//esc
+      playPause.innerHTML = "PLAY"
+      escBtn(event);
+      instruct.innerHTML = "Press PLAY To Continue";
+    }
+
+  })
 
   topScorers();
 
