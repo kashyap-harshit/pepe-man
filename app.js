@@ -207,10 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
     right.addEventListener("click", movePacGenRight);
     up.addEventListener("click", movePacGenUp);
     down.addEventListener("click", movePacGenDown);
-    holdHandler(left, movePacGenLeft, theIntFuncLeft);
-    holdHandler(right, movePacGenRight, theIntFuncRight);
-    holdHandler(up, movePacGenUp, theIntFuncUp);
-    holdHandler(down, movePacGenDown, theIntFuncDown);
+    holdHandler(left, movePacGenLeft, "left");
+    holdHandler(right, movePacGenRight, "right");
+    holdHandler(up, movePacGenUp, "up");
+    holdHandler(down, movePacGenDown, "down");
   }
   function spaceBtn(event) {
     event.preventDefault()
@@ -282,14 +282,23 @@ document.addEventListener('DOMContentLoaded', () => {
       gameStarted = true;
     }
   }
-  function holdHandler(dirBtn, dirFunc, theFunc) {
+  function holdHandler(dirBtn, dirFunc, dirStr) {
     let theInt;
     let theIntFunc = () => {
       theInt = setInterval(() => {
         dirFunc();
       }, 200);
     }
-    theFunc = theIntFunc;
+    if(dirStr==="up"){
+      theIntFuncUp = theIntFunc;
+    }else if(dirStr==="down"){
+      theIntFuncDown = theIntFunc;
+    }else if(dirStr==="right"){
+      theIntFuncRight = theIntFunc;
+    }else if(dirStr==="left"){
+      theIntFuncLeft = theIntFunc;
+    }
+    console.log(theIntFuncUp);
     dirBtn.addEventListener("touchstart", theIntFunc)
     dirBtn.addEventListener("touchend", () => {
       clearInterval(theInt);
@@ -345,9 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function onHoldButtons() {
 
-  }
   function checkEnergizerEaten() {
     if (squares[pacmanCurrentIndex].classList.contains("energizer")) {
       if (sfx.energy.playing()) {
