@@ -247,17 +247,11 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreDisplay.innerHTML = 0;
       document.addEventListener("keydown", movePacMan);
       left.addEventListener("click", movePacGenLeft);
-      // holdHandler(left, movePacGenLeft);
-      
-      left.addEventListener("mousedown", ()=>{
-        theInt = setInterval(() => {
-          console.log('yes');
-          movePacGenLeft();
-        }, 200);
-      })
-      left.addEventListener("mouseup", ()=>{
-        clearInterval(theInt);
-      })
+      holdHandler(left, movePacGenLeft);
+      holdHandler(right, movePacGenRight);
+      holdHandler(up, movePacGenUp);
+      holdHandler(down, movePacGenDown);
+
       right.addEventListener("click", movePacGenRight);
       up.addEventListener("click", movePacGenUp);
       down.addEventListener("click", movePacGenDown);
@@ -277,12 +271,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("what");
         dirFunc();
       }, 200);
+
+      
       
     }
     dirBtn.addEventListener("mousedown", theIntFunc)
     dirBtn.addEventListener("mouseup", () => {
       clearInterval(theInt);
-      holdHandler(dirBtn, dirFunc);
+
     })
   }
   function escBtn(event) {
