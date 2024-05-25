@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.currentIndex = item.startIndex;
         squares[item.currentIndex].classList.add(item.color);
         squares[item.currentIndex].classList.add("ghost");
-        // moveGhost(item);
+        moveGhost(item);
       });
 
 
