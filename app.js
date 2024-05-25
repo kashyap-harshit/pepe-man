@@ -192,14 +192,25 @@ document.addEventListener('DOMContentLoaded', () => {
   function remEventListeners(){
     document.removeEventListener("keydown", movePacMan)
     left.removeEventListener("click", movePacGenLeft);
+    right.removeEventListener("click", movePacGenRight);
+    up.removeEventListener("click", movePacGenUp);
+    down.removeEventListener("click", movePacGenDown);
     left.removeEventListener("touchstart", theIntFuncLeft)
     right.removeEventListener("touchstart", theIntFuncRight)
     up.removeEventListener("touchstart", theIntFuncUp)
     down.removeEventListener("touchstart", theIntFuncDown)
-    right.removeEventListener("click", movePacGenRight);
-    up.removeEventListener("click", movePacGenUp);
-    down.removeEventListener("click", movePacGenDown);
     
+  }
+  function addPacEvents(){
+    document.addEventListener("keydown", movePacMan);
+    left.addEventListener("click", movePacGenLeft);
+    right.addEventListener("click", movePacGenRight);
+    up.addEventListener("click", movePacGenUp);
+    down.addEventListener("click", movePacGenDown);
+    holdHandler(left, movePacGenLeft, theIntFuncLeft);
+    holdHandler(right, movePacGenRight, theIntFuncRight);
+    holdHandler(up, movePacGenUp, theIntFuncUp);
+    holdHandler(down, movePacGenDown, theIntFuncDown);
   }
   function spaceBtn(event) {
     event.preventDefault()
@@ -212,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         moveGhost(item);
       });
 
-      document.addEventListener("keydown", movePacMan);
+      addPacEvents();
       paused = false;
       gameStarted = true;
     }
@@ -261,16 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
       squares[pacmanCurrentIndex].classList.add("pac-man");
       pacmanClass = document.querySelector(".pac-man");
       scoreDisplay.innerHTML = 0;
-      document.addEventListener("keydown", movePacMan);
-      left.addEventListener("click", movePacGenLeft);
-      holdHandler(left, movePacGenLeft, theIntFuncLeft);
-      holdHandler(right, movePacGenRight, theIntFuncRight);
-      holdHandler(up, movePacGenUp, theIntFuncUp);
-      holdHandler(down, movePacGenDown, theIntFuncDown);
-
-      right.addEventListener("click", movePacGenRight);
-      up.addEventListener("click", movePacGenUp);
-      down.addEventListener("click", movePacGenDown);
+      addPacEvents();
       pacmanClass.style.backgroundImage = "url(assets/pe1.png)";
       clearInterval(bgInter);
       bgInter = setInterval(() => {
