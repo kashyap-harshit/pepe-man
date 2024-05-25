@@ -275,8 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       
     }
-    dirBtn.addEventListener("mousedown", theIntFunc)
-    dirBtn.addEventListener("mouseup", () => {
+    dirBtn.addEventListener("ontouchstart", theIntFunc)
+    dirBtn.addEventListener("ontouchend", () => {
       clearInterval(theInt);
 
     })
