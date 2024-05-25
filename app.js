@@ -28,10 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let pacmanCurrentIndex = 490;
   let randImg;
   let bgInter;
+  let leftHold;
+  let rightHold;
+  let upHold;
+  let downHold;
   const movePacGenLeft = () => { movePacGen(moveLeft) };
   const movePacGenRight = () => { movePacGen(moveRight) };
   const movePacGenUp = () => { movePacGen(moveUp) };
   const movePacGenDown = () => { movePacGen(moveDown) };
+  let theInt;
   let sfx = {
 
     eat: new Howl({
@@ -228,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.currentIndex = item.startIndex;
         squares[item.currentIndex].classList.add(item.color);
         squares[item.currentIndex].classList.add("ghost");
-        moveGhost(item);
+        // moveGhost(item);
       });
 
 
@@ -242,10 +247,20 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreDisplay.innerHTML = 0;
       document.addEventListener("keydown", movePacMan);
       left.addEventListener("click", movePacGenLeft);
+      // holdHandler(left, movePacGenLeft);
+      
+      left.addEventListener("mousedown", ()=>{
+        theInt = setInterval(() => {
+          console.log('yes');
+          movePacGenLeft();
+        }, 200);
+      })
+      left.addEventListener("mouseup", ()=>{
+        clearInterval(theInt);
+      })
       right.addEventListener("click", movePacGenRight);
       up.addEventListener("click", movePacGenUp);
       down.addEventListener("click", movePacGenDown);
-
       pacmanClass.style.backgroundImage = "url(assets/pe1.png)";
       clearInterval(bgInter);
       bgInter = setInterval(() => {
@@ -254,6 +269,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 500);
       gameStarted = true;
     }
+  }
+  function holdHandler(dirBtn, dirFunc) {
+    let theInt;
+    let theIntFunc = () => {
+      theInt = setInterval(() => {
+        console.log("what");
+        dirFunc();
+      }, 200);
+      
+    }
+    dirBtn.addEventListener("mousedown", theIntFunc)
+    dirBtn.addEventListener("mouseup", () => {
+      clearInterval(theInt);
+      holdHandler(dirBtn, dirFunc);
+    })
   }
   function escBtn(event) {
     if (gameStarted) {
@@ -303,6 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function onHoldButtons() {
+
+  }
   function checkEnergizerEaten() {
     if (squares[pacmanCurrentIndex].classList.contains("energizer")) {
       if (sfx.energy.playing()) {
@@ -522,9 +555,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sfx.bgm.stop()
 
     resultDisplay.innerHTML = mess;
-    if(isMobile){
+    if (isMobile) {
       instruct.innerHTML = "Press PLAY To <br>Start A New Game"
-    }else{
+    } else {
 
       instruct.innerHTML = "Press Space Bar To <br>Start A New Game"
     }
