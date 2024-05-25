@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const movePacGenUp = () => { movePacGen(moveUp) };
   const movePacGenDown = () => { movePacGen(moveDown) };
   let theInt;
+  let theIntFuncLeft;
+  let theIntFuncRight;
+  let theIntFuncUp;
+  let theIntFuncDown;
   let sfx = {
 
     eat: new Howl({
@@ -185,6 +189,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(squares.length)
     // console.log(length)
   }
+  function remEventListeners(){
+    document.removeEventListener("keydown", movePacMan)
+    left.removeEventListener("click", movePacGenLeft);
+    left.removeEventListener("touchstart", theIntFuncLeft)
+    right.removeEventListener("touchstart", theIntFuncRight)
+    up.removeEventListener("touchstart", theIntFuncUp)
+    down.removeEventListener("touchstart", theIntFuncDown)
+    right.removeEventListener("click", movePacGenRight);
+    up.removeEventListener("click", movePacGenUp);
+    down.removeEventListener("click", movePacGenDown);
+    
+  }
   function spaceBtn(event) {
     event.preventDefault()
     if (paused) {
@@ -247,10 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreDisplay.innerHTML = 0;
       document.addEventListener("keydown", movePacMan);
       left.addEventListener("click", movePacGenLeft);
-      holdHandler(left, movePacGenLeft);
-      holdHandler(right, movePacGenRight);
-      holdHandler(up, movePacGenUp);
-      holdHandler(down, movePacGenDown);
+      holdHandler(left, movePacGenLeft, theIntFuncLeft);
+      holdHandler(right, movePacGenRight, theIntFuncRight);
+      holdHandler(up, movePacGenUp, theIntFuncUp);
+      holdHandler(down, movePacGenDown, theIntFuncDown);
 
       right.addEventListener("click", movePacGenRight);
       up.addEventListener("click", movePacGenUp);
@@ -264,23 +280,21 @@ document.addEventListener('DOMContentLoaded', () => {
       gameStarted = true;
     }
   }
-  function holdHandler(dirBtn, dirFunc) {
+  function holdHandler(dirBtn, dirFunc, theFunc) {
     let theInt;
     let theIntFunc = () => {
       theInt = setInterval(() => {
-        console.log("what");
         dirFunc();
       }, 200);
-
-      
-      
     }
+    theFunc = theIntFunc;
     dirBtn.addEventListener("touchstart", theIntFunc)
     dirBtn.addEventListener("touchend", () => {
       clearInterval(theInt);
 
     })
   }
+
   function escBtn(event) {
     if (gameStarted) {
 
@@ -295,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gameStarted = false;
       resultDisplay.innerHTML = "PAUSED";
       instruct.innerHTML = "Press Space Bar To Continue";
-      document.removeEventListener("keydown", movePacMan)
+      remEventListeners();
     }
   }
   function redirection(event) {
@@ -543,12 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ghosts.forEach((item, i) => {
       clearInterval(item.timerId);
     });
-    document.removeEventListener("keydown", movePacMan)
-    left.removeEventListener("click", movePacGenLeft);
-    right.removeEventListener("click", movePacGenRight);
-    up.removeEventListener("click", movePacGenUp);
-    down.removeEventListener("click", movePacGenDown);
-    sfx.bgm.stop()
+    remEventListeners();
+    sfx.bgm.stop();
 
     resultDisplay.innerHTML = mess;
     if (isMobile) {
