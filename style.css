@@ -69,6 +69,7 @@ button {
   color: blue;
   margin-bottom: 20px;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 

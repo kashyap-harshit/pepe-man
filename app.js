@@ -298,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }else if(dirStr==="left"){
       theIntFuncLeft = theIntFunc;
     }
-    console.log(theIntFuncUp);
     dirBtn.addEventListener("touchstart", theIntFunc)
     dirBtn.addEventListener("touchend", () => {
       clearInterval(theInt);
@@ -378,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   function moveLeft() {
-    // console.log(left);
     if (pacmanCurrentIndex % width != 0 && !squares[pacmanCurrentIndex - 1].classList.contains("wall") && !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair")) {
       pacmanCurrentIndex -= 1;
     }
