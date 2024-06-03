@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3 - energizer
   // 4 - empty
   const layoutBackup = layout.slice(); //creating a copy of the og layout
-
+  document.addEventListener('contextmenu', event => event.preventDefault()); //preventing right click
   function isMobile() {
     if (window.matchMedia("(max-width: 600px)").matches) {
       return true;
